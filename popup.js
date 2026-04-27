@@ -60,7 +60,7 @@ async function captureAndAnalyze() {
   ctx.drawImage(video, 0, 0);
   const imageData = canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
 
-  feedbackBox.textContent = 'Analyzing...';
+  statusEl.textContent = 'Analyzing...';
 
   try {
     const response = await fetch('https://polished-iota.vercel.app/api/analyze', {
@@ -93,7 +93,13 @@ async function captureAndAnalyze() {
     });
 
     const data = await response.json();
-    feedbackBox.textContent = data.content[0].text;
+    const newFeedback = document.createElement('p');
+newFeedback.style.marginBottom = '12px';
+newFeedback.style.borderBottom = '1px solid #333';
+newFeedback.style.paddingBottom = '12px';
+newFeedback.textContent = data.content[0].text;
+feedbackBox.appendChild(newFeedback);
+feedbackBox.scrollTop = feedbackBox.scrollHeight;
     statusEl.textContent = 'Next check in 15 seconds...';
 
   } catch (err) {
