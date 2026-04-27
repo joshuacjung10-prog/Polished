@@ -3,86 +3,90 @@
   <head>
     <meta charset="UTF-8" />
     <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
-        width: 420px;
-        height: 600px;
-        margin: 0;
-        padding: 20px;
+        width: 100vw;
+        height: 100vh;
         font-family: Arial, sans-serif;
         background: #0f0f0f;
         color: #ffffff;
-        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
       }
       h1 {
-        font-size: 22px;
+        font-size: 26px;
         color: #c9a84c;
         margin-bottom: 4px;
       }
       .subtitle {
-        font-size: 12px;
+        font-size: 13px;
         color: #888;
         margin-bottom: 16px;
       }
       #video-container {
-        position: relative;
-        width: 100%;
+        width: 90%;
+        max-width: 800px;
         background: #1a1a1a;
-        border-radius: 10px;
+        border-radius: 12px;
         overflow: hidden;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
       }
       video {
         width: 100%;
-        border-radius: 10px;
         display: block;
+        border-radius: 12px;
+      }
+      .controls {
+        display: flex;
+        gap: 12px;
+        width: 90%;
+        max-width: 800px;
+        margin-bottom: 14px;
       }
       .btn {
-        width: 100%;
-        padding: 11px;
+        flex: 1;
+        padding: 12px;
         border: none;
         border-radius: 8px;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: bold;
         cursor: pointer;
-        margin-bottom: 10px;
       }
       .btn-start {
         background: #c9a84c;
         color: #000;
       }
-      .btn-start:hover {
-        background: #b8973e;
-      }
+      .btn-start:hover { background: #b8973e; }
       .btn-stop {
         background: #333;
         color: #fff;
         display: none;
       }
-      .btn-stop:hover {
-        background: #444;
-      }
+      .btn-stop:hover { background: #444; }
       #timer {
-        text-align: center;
         font-size: 13px;
         color: #888;
         margin-bottom: 10px;
         display: none;
       }
       #feedback-box {
+        width: 90%;
+        max-width: 800px;
         background: #1a1a1a;
-        border-radius: 8px;
-        padding: 14px;
-        font-size: 13px;
-        line-height: 1.7;
-        min-height: 80px;
+        border-radius: 10px;
+        padding: 18px;
+        font-size: 14px;
+        line-height: 1.8;
         color: #ddd;
         display: none;
+        flex: 1;
       }
       .status {
-        font-size: 12px;
+        font-size: 13px;
         color: #888;
-        text-align: center;
-        margin-top: 8px;
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -94,13 +98,13 @@
       <video id="video" autoplay muted playsinline></video>
     </div>
 
-    <button class="btn btn-start" id="startBtn">Start Session</button>
-    <button class="btn btn-stop" id="stopBtn">End Session</button>
+    <div class="controls">
+      <button class="btn btn-start" id="startBtn">Start Session</button>
+      <button class="btn btn-stop" id="stopBtn">End Session</button>
+    </div>
 
     <div id="timer">Session time: <span id="time">0:00</span></div>
-
-    <div id="feedback-box" id="feedback"></div>
-
+    <div id="feedback-box"></div>
     <p class="status" id="status">Click start to begin your session</p>
 
     <script src="popup.js"></script>
