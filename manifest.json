@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Polished",
+  "version": "1.0",
+  "description": "Your AI confidence coach — real time feedback on posture, voice, and expressions",
+  "permissions": ["activeTab", "scripting", "tabs"],
+  "action": {
+    "default_title": "Polished"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; media-src *"
+  }
+}
