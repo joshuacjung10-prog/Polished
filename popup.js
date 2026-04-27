@@ -63,7 +63,7 @@ async function captureAndAnalyze() {
   feedbackBox.textContent = 'Analyzing...';
 
   try {
-    const response = await fetch('https://polished.vercel.app/api/analyze', {
+    const response = await fetch('https://polished-iota.vercel.app/api/analyze', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
