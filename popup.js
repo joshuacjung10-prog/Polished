@@ -1,7 +1,6 @@
 const video = document.getElementById('video');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
-const feedbackBox = document.getElementById('feedback-box');
 const statusEl = document.getElementById('status');
 const timerEl = document.getElementById('timer');
 const timeEl = document.getElementById('time');
@@ -19,7 +18,6 @@ async function startSession() {
     startBtn.style.display = 'none';
     stopBtn.style.display = 'block';
     timerEl.style.display = 'block';
-    feedbackBox.style.display = 'block';
     statusEl.textContent = 'Session active — AI is watching...';
 
     timerInterval = setInterval(() => {
@@ -52,6 +50,13 @@ function stopSession() {
   statusEl.textContent = 'Session ended. Click start for a new session.';
 }
 
+function setScore(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val;
+  el.className = 'card-score' + (val >= 80 ? ' good' : val >= 60 ? ' mid' : ' low');
+}
+
 async function captureAndAnalyze() {
   const canvas = document.createElement('canvas');
   canvas.width = video.videoWidth;
@@ -65,10 +70,7 @@ async function captureAndAnalyze() {
   try {
     const response = await fetch('https://polished-iota.vercel.app/api/analyze', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-opus-4-20250514',
         max_tokens: 300,
@@ -85,7 +87,11 @@ async function captureAndAnalyze() {
             },
             {
               type: 'text',
-              text: `You are Polished, a warm and encouraging AI confidence coach. Analyze this image carefully and give specific feedback on: 1) POSTURE — are they slouching, is their back straight, how are their shoulders positioned? 2) FACIAL EXPRESSION — do they look engaged, tense, neutral, approachable? 3) EYE CONTACT — are they looking at the camera or away? 4) BODY LANGUAGE — are their arms crossed, are they fidgeting, do they look open or closed off? Give 3 specific actionable tips referencing exactly what you see. Be direct, warm, and specific. Never be generic. Under 100 words.`
+              text: `You are Polished, a professional AI confidence coach. Analyze this image and return your response in this exact format:
+POSTURE_SCORE: [number 0-100]
+EXPRESSION_SCORE: [number 0-100]
+VOICE_SCORE: [number 0-100]
+FEEDBACK: [2-3 specific actionable tips based exactly on what you see. Be direct and specific, never generic. Under 80 words.]`
             }
           ]
         }]
@@ -93,17 +99,31 @@ async function captureAndAnalyze() {
     });
 
     const data = await response.json();
-    const newFeedback = document.createElement('p');
-newFeedback.style.marginBottom = '12px';
-newFeedback.style.borderBottom = '1px solid #333';
-newFeedback.style.paddingBottom = '12px';
-newFeedback.textContent = data.content[0].text;
-feedbackBox.appendChild(newFeedback);
-feedbackBox.scrollTop = feedbackBox.scrollHeight;
+    const raw = data.content[0].text;
+
+    const postureMatch = raw.match(/POSTURE_SCORE:\s*(\d+)/);
+    const expressionMatch = raw.match(/EXPRESSION_SCORE:\s*(\d+)/);
+    const voiceMatch = raw.match(/VOICE_SCORE:\s*(\d+)/);
+    const feedbackMatch = raw.match(/FEEDBACK:\s*([\s\S]+)/);
+
+    if (postureMatch) setScore('score-posture', postureMatch[1]);
+    if (expressionMatch) setScore('score-expression', expressionMatch[1]);
+    if (voiceMatch) setScore('score-voice', voiceMatch[1]);
+
+    if (feedbackMatch) {
+      document.getElementById('empty-state').style.display = 'none';
+      const entry = document.createElement('div');
+      entry.className = 'feedback-entry';
+      const now = new Date();
+      entry.innerHTML = '<div class="feedback-time">' + now.toLocaleTimeString() + '</div>' + feedbackMatch[1].trim();
+      document.getElementById('feedback-panel').appendChild(entry);
+      document.getElementById('feedback-panel').scrollTop = document.getElementById('feedback-panel').scrollHeight;
+    }
+
     statusEl.textContent = 'Next check in 15 seconds...';
 
   } catch (err) {
-    feedbackBox.textContent = 'Could not analyze — check your connection.';
+    statusEl.textContent = 'Could not analyze — check your connection.';
   }
 }
 
