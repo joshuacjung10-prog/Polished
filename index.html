@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polished — AI Confidence Coach</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      border-bottom: 0.5px solid #21262d;
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #58a6ff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-btn {
+      padding: 10px 22px;
+      background: #1f6feb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-btn:hover { background: #388bfd; }
+
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 80px;
+      gap: 24px;
+    }
+    .hero-badge {
+      background: #1f3a6e;
+      color: #58a6ff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 0.5px solid #1f6feb;
+      letter-spacing: 0.5px;
+    }
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+      max-width: 700px;
+    }
+    .hero h1 span {
+      color: #58a6ff;
+    }
+    .hero p {
+      font-size: 18px;
+      color: #8b949e;
+      max-width: 480px;
+      line-height: 1.7;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .btn-primary {
+      padding: 14px 32px;
+      background: #1f6feb;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: #388bfd; }
+    .btn-secondary {
+      padding: 14px 32px;
+      background: transparent;
+      color: #8b949e;
+      border: 0.5px solid #30363d;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { background: #161b22; color: #fff; }
+
+    /* PREVIEW */
+    .preview {
+      display: flex;
+      justify-content: center;
+      padding: 0 24px 80px;
+    }
+    .preview-box {
+      background: #161b22;
+      border: 0.5px solid #30363d;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 900px;
+      width: 100%;
+    }
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .preview-logo {
+      font-size: 16px;
+      font-weight: 700;
+      color: #58a6ff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preview-timer {
+      font-size: 12px;
+      color: #8b949e;
+    }
+    .preview-scores {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .preview-card {
+      background: #0d1117;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      border: 0.5px solid #21262d;
+    }
+    .preview-card-label {
+      font-size: 10px;
+      color: #58a6ff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .preview-card-score {
+      font-size: 26px;
+      font-weight: 700;
+    }
+    .preview-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .preview-camera {
+      background: #0d1117;
+      border-radius: 10px;
+      border: 0.5px solid #21262d;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #30363d;
+      font-size: 13px;
+    }
+    .preview-feedback {
+      background: #0d1117;
+      border-radius: 10px;
+      border: 0.5px solid #21262d;
+      padding: 14px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .preview-feedback-title {
+      font-size: 11px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 0.5px solid #21262d;
+      padding-bottom: 8px;
+    }
+    .preview-entry {
+      background: #161b22;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #c9d1d9;
+      border-left: 2px solid #58a6ff;
+    }
+    .preview-time {
+      font-size: 10px;
+      color: #8b949e;
+      margin-bottom: 3px;
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 80px 48px;
+      text-align: center;
+    }
+    .features h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+    .features-sub {
+      font-size: 16px;
+      color: #8b949e;
+      margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: #161b22;
+      border-radius: 12px;
+      padding: 24px;
+      border: 0.5px solid #30363d;
+      text-align: left;
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #1f3a6e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: #8b949e;
+      line-height: 1.7;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 24px;
+      text-align: center;
+      border-top: 0.5px solid #21262d;
+    }
+    .cta h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+    .cta p {
+      font-size: 16px;
+      color: #8b949e;
+      margin-bottom: 32px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 24px 48px;
+      border-top: 0.5px solid #21262d;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-size: 13px;
+      color: #8b949e;
+    }
+    footer a {
+      font-size: 13px;
+      color: #58a6ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <svg width="24" height="24" viewBox="0 0 72 72" fill="none">
+        <circle cx="36" cy="36" r="32" fill="#1f6feb" fill-opacity="0.06" stroke="#1f6feb" stroke-width="1.5" stroke-opacity="0.3"/>
+        <circle cx="36" cy="36" r="26" fill="none" stroke="#58a6ff" stroke-width="0.5" stroke-opacity="0.2"/>
+        <polygon points="36,10 58,28 36,62 14,28" fill="#0d1117"/>
+        <polygon points="36,10 58,28 36,62 14,28" fill="none" stroke="#58a6ff" stroke-width="1.8"/>
+        <polygon points="36,10 58,28 36,28" fill="#1f6feb" fill-opacity="0.55"/>
+        <polygon points="36,10 14,28 36,28" fill="#1f6feb" fill-opacity="0.2"/>
+        <polygon points="14,28 36,28 36,62" fill="#1f6feb" fill-opacity="0.08"/>
+        <polygon points="58,28 36,28 36,62" fill="#1f6feb" fill-opacity="0.18"/>
+        <line x1="14" y1="28" x2="58" y2="28" stroke="#88c8ff" stroke-width="1"/>
+        <line x1="36" y1="10" x2="36" y2="28" stroke="#88c8ff" stroke-width="1" stroke-opacity="0.7"/>
+        <line x1="36" y1="28" x2="36" y2="62" stroke="#58a6ff" stroke-width="0.6" stroke-opacity="0.3"/>
+        <polygon points="36,10 49,20 36,20" fill="white" fill-opacity="0.55"/>
+      </svg>
+      Polished
+    </div>
+    <a href="app.html" class="nav-btn">Try for free</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">AI CONFIDENCE COACH</div>
+    <h1>Look confident.<br/>Sound confident.<br/><span>Be confident.</span></h1>
+    <p>Polished gives you real time AI feedback on your posture, expressions, and voice — so you always know how you come across.</p>
+    <div class="hero-btns">
+      <a href="app.html" class="btn-primary">Start coaching — it's free</a>
+      <a href="#features" class="btn-secondary">See how it works</a>
+    </div>
+  </section>
+
+  <!-- PREVIEW -->
+  <div class="preview">
+    <div class="preview-box">
+      <div class="preview-header">
+        <div class="preview-logo">
+          <svg width="20" height="20" viewBox="0 0 72 72" fill="none">
+            <circle cx="36" cy="36" r="32" fill="#1f6feb" fill-opacity="0.06" stroke="#1f6feb" stroke-width="1.5" stroke-opacity="0.3"/>
+            <polygon points="36,10 58,28 36,62 14,28" fill="#0d1117"/>
+            <polygon points="36,10 58,28 36,62 14,28" fill="none" stroke="#58a6ff" stroke-width="1.8"/>
+            <polygon points="36,10 58,28 36,28" fill="#1f6feb" fill-opacity="0.55"/>
+            <line x1="14" y1="28" x2="58" y2="28" stroke="#88c8ff" stroke-width="1"/>
+            <polygon points="36,10 49,20 36,20" fill="white" fill-opacity="0.55"/>
+          </svg>
+          Polished
+        </div>
+        <div class="preview-timer">Session: 2:34</div>
+      </div>
+      <div class="preview-scores">
+        <div class="preview-card">
+          <div class="preview-card-label">Posture</div>
+          <div class="preview-card-score" style="color:#3fb950;">82</div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-card-label">Expression</div>
+          <div class="preview-card-score" style="color:#d29922;">74</div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-card-label">Voice</div>
+          <div class="preview-card-score" style="color:#3fb950;">88</div>
+        </div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-camera">📷 Camera feed</div>
+        <div class="preview-feedback">
+          <div class="preview-feedback-title">Coach Feedback</div>
+          <div class="preview-entry">
+            <div class="preview-time">2:15 PM</div>
+            Your shoulders are slightly raised — consciously drop them and breathe. Your eye contact is strong. Try to vary your pace a little more when making key points.
+          </div>
+          <div class="preview-entry">
+            <div class="preview-time">2:30 PM</div>
+            Good upright posture now. Your smile looks natural and engaging. Watch the filler words — you used "um" three times in that last sentence.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <h2>Everything you need to be confident</h2>
+    <p class="features-sub">Real time feedback across every dimension of how you present yourself</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <h3>Posture & body language</h3>
+        <p>AI watches how you carry yourself and gives instant tips to look more open, confident, and in control.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M6 20v-2a6 6 0 0 1 12 0v2"/>
+          </svg>
+        </div>
+        <h3>Facial expressions</h3>
+        <p>Know if you look engaged, tense, or approachable. Small expression changes make a huge difference in how others perceive you.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+          </svg>
+        </div>
+        <h3>Voice & speech</h3>
+        <p>Tracks your pace, tone, and filler words in real time. Speak with more clarity and authority every session.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Ready to level up?</h2>
+    <p>Start your first session free — no account needed.</p>
+    <a href="app.html" class="btn-primary">Try Polished for free</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Polished. All rights reserved.</p>
+    <a href="privacy.html">Privacy Policy</a>
+  </footer>
+
+</body>
+</html>
