@@ -199,3 +199,7 @@ FEEDBACK: [Give 3 specific tips. Each tip must reference something specific you 
 
 startBtn.addEventListener('click', startSession);
 stopBtn.addEventListener('click', stopSession);
+
+document.getElementById('getStartedBtn').addEventListener('click', function() {
+  document.getElementById('onboarding').style.display = 'none';
+});
